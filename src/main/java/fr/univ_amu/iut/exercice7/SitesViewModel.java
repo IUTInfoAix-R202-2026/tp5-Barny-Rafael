@@ -33,8 +33,12 @@ public class SitesViewModel {
     // TODO exercice 7 : charger les sites depuis la base et lier le résumé.
     //
     // - remplir `sites` avec tous les sites du DAO (dao.findAll), via setAll ;
-    // - lier `resume` à une chaîne dérivée du nombre de sites (Bindings.size(sites)),
-    //   au format attendu par le test (cf. SitesViewModelTest).
+    // - lier `resume` à une chaîne dérivée du nombre de sites
+    // (Bindings.size(sites)),
+    // au format attendu par le test (cf. SitesViewModelTest).
+
+    sites.setAll(dao.findAll());
+    resume.set(sites.size() + " site(s) suivi(s)");
   }
 
   public ObservableList<Site> sitesProperty() {
@@ -47,11 +51,17 @@ public class SitesViewModel {
 
   /** Persiste un nouveau site puis l'ajoute à la liste observable. */
   public void ajouterCommand(Site site) {
-    // TODO exercice 7 : insérer le site en base (dao.insert) puis l'ajouter à `sites`.
+    // TODO exercice 7 : insérer le site en base (dao.insert) puis l'ajouter à
+    // `sites`.
+    dao.insert(site);
+    sites.add(site);
   }
 
   /** Supprime un site de la base puis de la liste observable. */
   public void supprimerCommand(Site site) {
-    // TODO exercice 7 : supprimer le site en base (dao.delete) puis le retirer de `sites`.
+    // TODO exercice 7 : supprimer le site en base (dao.delete) puis le retirer de
+    // `sites`.
+    dao.delete(site.numeroCarre());
+    sites.remove(site);
   }
 }
