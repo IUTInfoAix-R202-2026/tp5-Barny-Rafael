@@ -70,6 +70,18 @@ public class TaxonDao {
     // depuis(rs)
     // et l'envelopper dans un Optional ; sinon, laisser `resultat` vide.
 
+    try (Connection connexion = source.getConnection();
+        PreparedStatement ps = connexion.prepareStatement(sql)) {
+      ps.setString(1, code);
+      try (ResultSet rs = ps.executeQuery()) {
+        if (rs.getString("code") != null) {
+          resultat = Optional.of(depuis(rs));
+        }
+      }
+    } catch (SQLException e) {
+      throw new DataAccessException("message", e);
+    }
+
     return resultat;
   }
 
